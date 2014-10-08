@@ -65,6 +65,7 @@ sass:
 gems:
   - jemoji # Emoji please!
   - jekyll-sitemap # Create a sitemap using the official Jekyll sitemap gem
+  - jekyll-multiple-languages
 
 # Exclude these files from your production _site
 exclude:
@@ -72,3 +73,12 @@ exclude:
     - Gemfile.lock
     - LICENSE
     - README.md
+
+# Multiple languages
+
+languages:          ['en', 'es']
+
+# If not config, the first of languages will be the default
+language_default:   'en'
+
+fill_default_content: true
