@@ -1,5 +1,5 @@
 +++
-title = ""
+title = "Cgo"
 tags = [
     "go",
     "golang",
@@ -13,7 +13,8 @@ toc = true
 
 ## What is cgo ?
 
-[Cgo]() is go's [FFI]() for C. This means that with Cgo you can call C code from Go and viceversa.
+[Cgo](https://golang.org/cmd/cgo/) is go's [FFI](https://en.wikipedia.org/wiki/Foreign_function_interface) for C. 
+This means that with Cgo you can call C code from Go and viceversa.
 
 ## How does it work ?
 
@@ -28,15 +29,15 @@ to interact.
 Even though both C and Go are compiled to assembly they don't use assembly in the same way. For example
 they both define their higher level functions in terms of different lower-level assembly primitives. The
 way that a language accepts parameters and returns values in assembly is called its 
-[calling convention](). (wrapper to go from one to the other) 
+[calling convention](https://en.wikipedia.org/wiki/Calling_convention). (wrapper to go from one to the other) 
 
 
 
 
 ## References
-[Cgo]():
-[FFI](https://en.wikipedia.org/wiki/Foreign_function_interface)
-[calling convention](https://en.wikipedia.org/wiki/Calling_convention)
+- [Cgo](https://golang.org/cmd/cgo/)
+- [FFI](https://en.wikipedia.org/wiki/Foreign_function_interface)
+- [calling convention](https://en.wikipedia.org/wiki/Calling_convention)
 
 
 
