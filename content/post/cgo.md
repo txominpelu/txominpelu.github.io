@@ -29,15 +29,26 @@ to interact.
 Even though both C and Go are compiled to assembly they don't use assembly in the same way. For example
 they both define their higher level functions in terms of different lower-level assembly primitives. The
 way that a language accepts parameters and returns values in assembly is called its 
-[calling convention](https://en.wikipedia.org/wiki/Calling_convention). (wrapper to go from one to the other) 
+[calling convention](https://en.wikipedia.org/wiki/Calling_convention) the go calling convention is
+described [here](https://github.com/golang/go/files/447163/GoFunctionsInAssembly.pdf). 
+
+(wrapper to go from one to the other) 
 
 
 
+## Notes
+
+- This article has taken many of it's references from: [RustGo: Calling rust from go with near-zero overhead](https://blog.filippo.io/rustgo/)
 
 ## References
 - [Cgo](https://golang.org/cmd/cgo/)
 - [FFI](https://en.wikipedia.org/wiki/Foreign_function_interface)
-- [calling convention](https://en.wikipedia.org/wiki/Calling_convention)
+- [Calling convention](https://en.wikipedia.org/wiki/Calling_convention)
+
+Assembler go:
+
+- [Go Functions in Assembly](https://github.com/golang/go/files/447163/GoFunctionsInAssembly.pdf)
+- [A Quick Guide to Go's Assembler](https://golang.org/doc/asm)
 
 
 
