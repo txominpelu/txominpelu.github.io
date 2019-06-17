@@ -30,9 +30,25 @@ Even though both C and Go are compiled to assembly they don't use assembly in th
 they both define their higher level functions in terms of different lower-level assembly primitives. The
 way that a language accepts parameters and returns values in assembly is called its 
 [calling convention](https://en.wikipedia.org/wiki/Calling_convention) the go calling convention is
-described [here](https://github.com/golang/go/files/447163/GoFunctionsInAssembly.pdf). 
+described [here](https://github.com/golang/go/files/447163/GoFunctionsInAssembly.pdf), according to
+[X86_calling_conventions](https://en.wikipedia.org/wiki/X86_calling_conventions) the C calling convention
+is called **cdecl** for IA-32 and **System V AMD64 ABI** for x86-64. Without getting into too much detail
+about how those two conventions work it is easy to understand that is not possible to call a C function
+without any kind of wrapper from Go if we consider that the most common C convention (the already mentioned
+System V AMD64 ABI) takes integer and pointer arguments from registers while Go functions take arguments
+and return values through the stack.
 
-(wrapper to go from one to the other) 
+Therefore one of the functionalities of Cgo is to provide a wrapper around C code. Let's imagine that we
+want to call a C function from go:
+
+```c
+int plusone(int value)
+{
+    return value + 1;
+}
+```
+
+## Garbage collection and Cgo
 
 
 
@@ -44,6 +60,7 @@ described [here](https://github.com/golang/go/files/447163/GoFunctionsInAssembly
 - [Cgo](https://golang.org/cmd/cgo/)
 - [FFI](https://en.wikipedia.org/wiki/Foreign_function_interface)
 - [Calling convention](https://en.wikipedia.org/wiki/Calling_convention)
+- [X86_calling_conventions](https://en.wikipedia.org/wiki/X86_calling_conventions)
 
 Assembler go:
 

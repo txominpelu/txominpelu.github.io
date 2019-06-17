@@ -1,5 +1,5 @@
-baseurl = "https://www.example.com"
-title = "Hugo Theme Basic"
+baseurl = "https://txominpelu.github.com"
+title = "Txominpelu Github Pages"
 theme ="hugo-theme-basic"
 languageCode = "en-us"
 googleAnalytics = "UA-XXXXXXXXX-X"
