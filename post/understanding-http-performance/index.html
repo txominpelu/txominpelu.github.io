@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html
+  class=""
+  lang="en-us"
+  prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#"
+>
+  <head>
+    <meta charset="utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="description" content="" />
+<meta name="HandheldFriendly" content="True" />
+<meta name="MobileOptimized" content="320" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="keywords" content="http,
+performance,
+development,
+">
+
+
+<meta property="og:type" content="article" />
+<meta property="og:description" content="" />
+<meta property="og:title" content="Understanding Http Performance" />
+<meta property="og:site_name" content="Txominpelu Github Pages" />
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="https://txominpelu.github.com/post/understanding-http-performance/" />
+<meta property="og:locale" content="en-us" />
+<meta property="article:published_time" content="2019-04-20
+" /> <meta property="article:modified_time" content="2019-04-20
+" />
+
+
+<meta property="article:tag" content="http" />
+<meta property="article:tag" content="performance" />
+<meta property="article:tag" content="development" />
+
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@siegerts" />
+<meta name="twitter:creator" content="@siegerts" />
+<meta
+  name="twitter:title"
+  content="Understanding Http Performance | Txominpelu Github Pages"
+/>
+<meta
+  name="twitter:description"
+  content="Imagine this scenario: you just developed a new web service you deploy it in production and your service starts to get traffic. This article provides a simple explanation of how to measure its performance and then provides tips to help you identify common scenarios that cause poor performance and how to fix them.
+Measuring performance If you have never monitored the performance of web service a good metric to look at is latency.|"
+/>
+<meta name="twitter:image:src" content="" />
+<meta name="twitter:domain" content="https://txominpelu.github.com/post/understanding-http-performance/" />
+
+
+    <title>Understanding Http Performance</title>
+    <link rel="canonical" href="https://txominpelu.github.com/post/understanding-http-performance/" />
+
+    <link
+      href=""
+      rel="alternate"
+      type="application/rss+xml"
+      title="Understanding Http Performance"
+    />
+
+    <link
+  rel="stylesheet"
+  href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"
+/>
+
+<link rel="stylesheet" href="https://txominpelu.github.comcss/style.css" />
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/highlightjs@9.12.0/styles/github-gist.css"
+/>
+
+
+<script type="application/javascript">
+var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+var doNotTrack = (dnt == "1" || dnt == "yes");
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	if (window.sessionStorage) {
+		var GA_SESSION_STORAGE_KEY = 'ga:clientId';
+		ga('create', 'UA-XXXXXXXXX-X', {
+	    'storage': 'none',
+	    'clientId': sessionStorage.getItem(GA_SESSION_STORAGE_KEY)
+	   });
+	   ga(function(tracker) {
+	    sessionStorage.setItem(GA_SESSION_STORAGE_KEY, tracker.get('clientId'));
+	   });
+   }
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+</html>
+
+<body
+  lang="en-us"
+  class="sans-serif w-90 w-80-m w-60-ns center mv2 mv5-ns"
+  itemscope
+  itemtype="http://schema.org/Article"
+>
+  
+  <span class="b">/ </span>
+  <a href="https://txominpelu.github.com" class="b bb bw1 pb1 no-underline black">Txominpelu Github Pages</a>
+  <span class="b"> / </span>
+  <a href="/post" class="b bb bw1 pb1 no-underline black">blog</a>
+
+  <section id="main" class="mt5">
+    <h1 itemprop="name" id="title">Understanding Http Performance</h1>
+    <span class="f6 gray">April 20, 2019</span>
+
+      <article itemprop="articleBody" id="content" class="w-90 lh-copy">
+        
+
+<p>Imagine this scenario: you just developed a new web service
+you deploy it in production and your service starts to get
+traffic. This article provides a simple explanation of how
+to measure its performance and then provides tips to help
+you identify common scenarios that cause poor performance
+and how to fix them.</p>
+
+<h2 id="measuring-performance">Measuring performance</h2>
+
+<p>If you have never monitored the performance of web service
+a good metric to look at is latency. Latency is &ldquo;a time delay
+between the cause and the effect&rdquo; &ndash; <cite><a href="https://en.wikipedia.org/wiki/Latency_(engineering)">Latency</a></cite>
+or in this context the delay between the request and the
+response.</p>
+
+<p>When looking at the latency just like with any other metrics it is
+important to look at percentiles more concretely the higher percentiles
+eg: 90%, 99%, 99.9% &hellip; It is a common mistake to only look at the
+average. Only looking at the average is problematic because the average only
+tells a really small part of the story and your service
+can have a decent average but really high latency in higher percentiles. For example
+In a user facing service whith high traffic that would mean that many users are
+experiencing a really slow website.</p>
+
+<p>The best way to look at percentiles is a grafana dashboard like this:</p>
+
+<p><img src="/grafana_percentile.png" alt="Example Grafana Percentiles" /></p>
+
+<p>Tips:</p>
+
+<ul>
+<li>Look at percentiles (average doesn&rsquo;t mean much)</li>
+
+<li><p>Look at from the client and from the server</p>
+
+<ul>
+<li>Log all times from client side (e.g events in okttp)</li>
+<li>Possible scenarios:
+
+<ul>
+<li>Slow server end to end</li>
+<li>Low wallclock in server but high wallclock on client
+
+<ul>
+<li>Server queuing</li>
+<li>Slow connection / dns / service discovery</li>
+<li>Slow network, packet loss, retry (Expect some network failure when looking at high percentiles (e.g packet loss) )</li>
+</ul></li>
+</ul></li>
+<li>Check that the client is doing service discovery properly (e.g maximizing data locality)</li>
+</ul></li>
+
+<li><p>Consider a reverse proxy (to alleviate weight from the server)</p></li>
+
+<li><p>Distribute the charge across servers</p></li>
+
+<li><p>Do things asynchronously when possible (e.g calling other services)</p></li>
+
+<li><p>Batch when possible (batch queries to SQL or services)</p></li>
+</ul>
+
+<p>[Throughput]().</p>
+
+<h2 id="network-performance-metrics">Network Performance Metrics</h2>
+
+<ul>
+<li>Latency
+
+<ul>
+<li>Connection Time</li>
+<li>Round Trip Time</li>
+</ul></li>
+<li>Packet loss
+
+<ul>
+<li>Retransmission rates</li>
+<li>Retransmission delay</li>
+</ul></li>
+<li>Throughput
+
+<ul>
+<li>Throughput</li>
+<li>Data Transfer Time</li>
+</ul></li>
+<li>Server Response Time</li>
+</ul>
+
+<h2 id="possible-causes">Possible causes</h2>
+
+<ul>
+<li>Slow server</li>
+<li>Slow network</li>
+<li>Slow DNS</li>
+</ul>
+
+<h2 id="tools-to-analyze-performance-tshark">Tools to analyze performance - TShark</h2>
+
+<h2 id="references">References</h2>
+
+<p><a href="https://accedian.com/enterprises/blog/measure-network-performance-metrics-passive-traffic-analysis/">How to measure network performance metrics via passive traffic analysis?</a></p>
+
+      </article>
+
+      
+      <span class="f6 gray mv3" title="Lastmod: April 20, 2019. Published at: 2019-04-20.">
+        
+      </span>
+
+      
+
+  </section>
+
+  <footer>
+    <div>
+      <p class="f6 gray mt6 lh-copy">
+        © 2016-19 <a href='https://github.com/siegerts/hugo-theme-basic'>Hugo Theme Basic</a>. Made by <a href='https://twitter.com/siegerts'>@siegerts</a>.
+      </p>
+    </div>
+  </footer>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
+
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+  </body>
+  </html>
+</body>

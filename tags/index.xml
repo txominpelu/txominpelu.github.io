@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Txominpelu Github Pages</title>
+    <link>https://txominpelu.github.com/tags/</link>
+    <description>Recent content in Tags on Txominpelu Github Pages</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2016-19 &lt;a href=&#39;https://github.com/siegerts/hugo-theme-basic&#39;&gt;Hugo Theme Basic&lt;/a&gt;. Made by &lt;a href=&#39;https://twitter.com/siegerts&#39;&gt;@siegerts&lt;/a&gt;.</copyright>
+    <lastBuildDate>Mon, 10 Jun 2019 00:00:00 +0200</lastBuildDate>
+    
+	<atom:link href="https://txominpelu.github.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>C</title>
+      <link>https://txominpelu.github.com/tags/c/</link>
+      <pubDate>Mon, 10 Jun 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://txominpelu.github.com/tags/c/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Development</title>
+      <link>https://txominpelu.github.com/tags/development/</link>
+      <pubDate>Sat, 20 Apr 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://txominpelu.github.com/tags/development/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ffi</title>
+      <link>https://txominpelu.github.com/tags/ffi/</link>
+      <pubDate>Mon, 10 Jun 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://txominpelu.github.com/tags/ffi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Go</title>
+      <link>https://txominpelu.github.com/tags/go/</link>
+      <pubDate>Mon, 10 Jun 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://txominpelu.github.com/tags/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Golang</title>
+      <link>https://txominpelu.github.com/tags/golang/</link>
+      <pubDate>Mon, 10 Jun 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://txominpelu.github.com/tags/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Http</title>
+      <link>https://txominpelu.github.com/tags/http/</link>
+      <pubDate>Sat, 20 Apr 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://txominpelu.github.com/tags/http/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Performance</title>
+      <link>https://txominpelu.github.com/tags/performance/</link>
+      <pubDate>Sat, 20 Apr 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://txominpelu.github.com/tags/performance/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Templates</title>
+      <link>https://txominpelu.github.com/tags/templates/</link>
+      <pubDate>Wed, 02 Apr 2014 00:00:00 +0200</pubDate>
+      
+      <guid>https://txominpelu.github.com/tags/templates/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Themes</title>
+      <link>https://txominpelu.github.com/tags/themes/</link>
+      <pubDate>Wed, 02 Apr 2014 00:00:00 +0200</pubDate>
+      
+      <guid>https://txominpelu.github.com/tags/themes/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
