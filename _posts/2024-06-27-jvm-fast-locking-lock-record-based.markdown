@@ -116,6 +116,8 @@ See [templateTable_aarch64.cpp](https://github.com/openjdk/jdk/blob/274c805c5137
 
 4. If it succeeds, the current thread afterwards owns the lock. Since lock records are always aligned at word boundaries, the last two bits of the header word are then 00 and identify the object as being locked.
 
+<img src="/assets/img/jvm-fast-locking-lock-record-based/thread-holds-lock.png" alt="">
+
 <!--
 - What's stored in the object header when the CAS succeeds ? A pointer to the monitor entry that 
 
