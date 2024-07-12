@@ -1,0 +1,85 @@
+---
+layout: post
+title:  "Hotspot JVM's Fast Locking"
+date:   2024-06-25 15:54:13 +0200
+categories: jvm concurrency
+---
+
+# Introduction
+
+This article describes how the hotspot JVM implements fast locking, an type
+of locking that is optimized to add as little overhead as possible when a single 
+thread tries to acquire the lock for an object. 
+
+Note that as soon as multiple threads compete to acquire the lock for an object
+the lock is promoted to a full monitor. In Hotspot it's common to refer to this process
+as inflating a monitor. It's also common to refer to the type of lock that is used
+to implement fast locking as *thin locks* and to full monitors as *fat locks*.
+
+Thin locking also doesn't cover `await / notify / notifyAll`, thin locks are inflated
+when multiple threads rely on those methods to cooperate.
+
+See [Locks & Java Synchronized]() for an introduction to locks in the JVM and some of
+its characteristics like `reentrancy` (aka in the code as `recursiveness`) and the abscence
+of `fairness` in the case of the `synchronized` keyword.
+
+# Historical evolution of fast locking
+
+Before thin locking, fast locking relied on a monitor cache that had to be locked before performing certain operations to avoid
+race conditions. On top of it, the monitor added significant space overhead when a large number of object monitors
+were created.
+
+According to the paper [Thin locks: featherweight synchronization for Java][thin-locks-paper], 
+thin locking was first implemented for IBM’s version of the JDK 1.1.2 for AIX. 
+Thin locking that is described in the aforementioned paper, brought fast locking by relying on using a part of
+the object header to contain:
+
+- A flag that indicated whether an object was locked / unlocked.
+- A pointer to the stack of the thread that was holding the lock in case of non-contention or a pointer to the object monitor in case of contention.
+- A count to reflect the number of times that the same thread has acquired an object lock.
+
+Then biased locking was introduced to avoid having to reduce the need to always run a compare-and-swap (aka CAS) operation whenever the same
+thread was trying to acquire a lock that it was already holding. However biased locking introduced unnecessary complexity and 
+[JEP-374][jep-374] was created to deprecate it.
+
+Recently the implementation of thin locks have been challenged by project Lilliput, a project focused on reducing the
+memory footprint of objects in the heap by reducing the size of object headers. The previous thin locking implementation
+had several drawbacks:
+
+- It used a significant amount of bits in the object header for locking, while most objects are never used for locking purposes.
+- It made it difficult to add changes to the object header layout, because the same bits in the object header could sometimes be unused,
+sometimes point to the stack of the thread holding the lock or in the case of a fat lock could hold a pointer to the object monitor.
+
+An explanation of the reasoning behind the changes to locking introduced by project Lilliput, is also provided in this presentation: 
+[Project Lilliput - Compact Object Headers][project-lilliput]. 
+
+# Representation of Objects in the JVM
+
+I will describe the most recent implementation of fast locking, that is the default implementation when the JVM is started with no flags. 
+
+The code for the previous implementation still exists, it is just hidden behind the *LM_LEGACY* locking mode.
+
+- CAS to know if a monitor is locked / unlock
+- Real question that the JVM needs to answer is: Is the current thread holding the lock ? 
+    - The answer comes from the fact that the JVM's JavaThread object holds a stack of objects that is holding the lock for.
+    - What about support for virtual threads ?
+- No support for recursion (as of June 2024 - fallback to full monitor - support upcoming)
+
+# Glossary
+
+- **Contention**: a situation where multiple threads compete to acquire a lock.
+- **Thin lock**: 
+- **Fat lock**: 
+
+# References
+
+In the abscence of contention, the original implementation before the changes brought by Lilliput did the following:
+
+- Make a copy of the existing header in the stack. Stack here refers to the thread stack. The copy of the header is known as the displaced header.
+- compare-and-swap to see if the object header is ewas unlocked. If it was, set the   
+-
+}
+
+[thin-locks-paper]: https://dl.acm.org/doi/10.1145/277650.277734
+[jep-374]: https://openjdk.org/jeps/374 
+[project-lilliput]: https://fosdem.org/2024/schedule/event/fosdem-2024-3015-project-lilliput-compact-object-headers/
